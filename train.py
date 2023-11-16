@@ -108,8 +108,9 @@ else:
             running_loss += loss.item()
         print(running_loss / len(train_loader))
 
-        torch.save(model.state_dict(), 'model5')
-        print('Model Saved')
+
+    torch.save(model.state_dict(), 'model_trained')
+    print('Model Saved')
 
 accuracy, avg_test_loss = evaluate_model(model, test_loader, criterion)
 print(f'Test Accuracy: {accuracy:.2f}%')
