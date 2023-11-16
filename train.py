@@ -25,19 +25,19 @@ def dataLoading():
     ])
 
     # Load data from folders
-    train_data = datasets.ImageFolder('new_dataset/', transform=transform)
-    dataset_size = len(train_data)
+    train_data = datasets.ImageFolder('train/', transform=transform)
+    validation_data = datasets.ImageFolder('validation/', transform=transform)
+    test_data = datasets.ImageFolder('test/', transform=transform)
 
-    train_size = int(0.7 * dataset_size)
-    val_size = (dataset_size - train_size)
 
-    train_data, val_data = random_split(train_data,[train_size,val_size])
+    # train_data, val_data = random_split(train_data,[train_size,val_size])
 
     # Create data loaders
     #pytorch - channel, height, width
     #train_loader = torch.utils.data.DataLoader(train_data, batch_size=32, shuffle=True)
     train_loader = torch.utils.data.DataLoader(train_data, batch_size=32, shuffle=True)
-    val_loader = torch.utils.data.DataLoader(val_data, batch_size=32)
+    val_loader = torch.utils.data.DataLoader(validation_data, batch_size=32)
+    test_loader = torch.utils.data.DataLoader(test_data, batch_size=32)
 
     # className = train_loader.dataset.classes
     # #print(f'classname- {className}')
@@ -66,7 +66,7 @@ def dataLoading():
     # print(f'Total Images done by computation {total_images}')
     # print(f'Total Images done by train_loader {len(train_loader.dataset)}')
 
-    return train_loader , val_loader
+    return train_loader , val_loader, test_loader
 
     # for i in range(4):
     #     images, labels = next(data_iter)
@@ -105,21 +105,20 @@ stride=1 defines the step size of the kernel during the convolution.
 padding=1 adds a 1-pixel border around the input to maintain spatial dimensions after convolution.
 
 """
-
 class CNNModel(nn.Module):
 
     def __init__(self,num_of_classes):
         super(CNNModel,self).__init__()
         self.conv1 = nn.Conv2d(3,16,kernel_size=3,stride=1,padding=1)
-        self.pool = nn.MaxPool2d(2,2)
+        self.pool = nn.MaxPool2d(4,4)
         self.conv2 = nn.Conv2d(16,32,kernel_size=3,stride=1,padding=1)
-        self.fc1 = nn.Linear(32 * 64 * 64, 128)
-        self.fc2 = nn.Linear(128, num_of_classes)
+        self.fc1 = nn.Linear(32 * 16 * 16, 10)
+        self.fc2 = nn.Linear(10, num_of_classes)
 
     def forward(self,x):
-        x = self.pool(torch.relu(self.conv1(x)))
-        x = self.pool(torch.relu(self.conv2(x)))
-        x = x.view(-1,32*64*64)
+        x = self.pool(torch.relu(self.conv1(x)))#256->256/4 = 64
+        x = self.pool(torch.relu(self.conv2(x)))#64/4 = 16
+        x = x.view(-1,32*16*16)
         x = torch.relu(self.fc1(x))
         x = torch.relu(self.fc2(x))
         return x
@@ -147,7 +146,7 @@ def evaluate_model(model, val_loader, criterion):
     return accuracy, avg_val_loss
 
 
-train_loader,val_loader = dataLoading()
+train_loader,val_loader, test_loader = dataLoading()
 
 model = CNNModel(4)
 criterion = nn.CrossEntropyLoss()
@@ -170,6 +169,12 @@ for epoch in range(num_epochs):
 accuracy, avg_val_loss = evaluate_model(model, val_loader, criterion)
 print(f'Validation Accuracy: {accuracy:.2f}%')
 print(f'Average Validation Loss: {avg_val_loss:.4f}')
+
+accuracy,avg_test_loss = evaluate_model(model,test_loader,criterion)
+print(f'Test Accuracy: {accuracy:.2f}%')
+print(f'Test Validation Loss: {avg_val_loss:.4f}')
+
+torch.save(model.state_dict(), 'model1')
 
 
 
