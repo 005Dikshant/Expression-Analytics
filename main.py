@@ -3,8 +3,6 @@ from torchvision import datasets, transforms
 import torch.nn as nn
 from torch.utils.data import random_split
 from sklearn.model_selection import train_test_split
-import os
-
 
 def dataLoading():
     transform = transforms.Compose([
@@ -73,19 +71,16 @@ def evaluate_model(model, loader, criterion):
     return accuracy, avg_loss
 
 
-train_loader, val_loader, test_loader = dataLoading()
-print('Data Loaded')
+if __name__ == "__main__":
 
-model = CNNModel(4)
-criterion = nn.CrossEntropyLoss()
-optimizer = torch.optim.Adam(model.parameters(), lr=0.0001)
+    train_loader, val_loader, test_loader = dataLoading()
+    print(f'Data Loaded: Train Images:{len(train_loader)*32}, Validation Images:{len(val_loader)*32} ,Test Images: {len(test_loader)*32}')
 
-if os.path.exists('model_trained'):
-    model.load_state_dict(torch.load('model_trained'))
-
-else:
-
+    model = CNNModel(4)
+    criterion = nn.CrossEntropyLoss()
+    optimizer = torch.optim.Adam(model.parameters(), lr=0.0001)
     num_epochs = 30
+
     for epoch in range(num_epochs):
 
         if (epoch + 1) % 10 == 0:
@@ -112,7 +107,8 @@ else:
     torch.save(model.state_dict(), 'model_trained')
     print('Model Saved')
 
-accuracy, avg_test_loss = evaluate_model(model, test_loader, criterion)
-print(f'Test Accuracy: {accuracy:.2f}%')
-print(f'Average Test Loss: {avg_test_loss:.4f}')
+
+
+
+
 
