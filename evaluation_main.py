@@ -3,7 +3,8 @@ from torchvision import datasets, transforms
 import torch.nn as nn
 from torch.utils.data import random_split
 from sklearn.model_selection import train_test_split
-from sklearn.metrics import confusion_matrix, ConfusionMatrixDisplay, precision_score, recall_score, accuracy_score
+from sklearn.metrics import confusion_matrix, ConfusionMatrixDisplay, precision_score, recall_score, accuracy_score, \
+    f1_score
 import matplotlib.pyplot as plt
 from main import CNNModel
 
@@ -83,9 +84,13 @@ pre_macro = precision_score(y_test, y_pred, average='macro')
 pre_micro = precision_score(y_test, y_pred, average='micro')
 recall_macro = recall_score(y_test, y_pred, average='macro')
 recall_micro = recall_score(y_test, y_pred, average='micro')
+f1_macro = f1_score(y_test, y_pred, average='macro')
+f1_micro = f1_score(y_test, y_pred, average='micro')
 
 print(f'Test Accuracy from SkLearn: {acc:.2f}%')
-print(f'Test pre_macro from SkLearn: {pre_macro:.2f}%')
-print(f'Test pre_micro from SkLearn: {pre_micro:.2f}%')
-print(f'Test recall_macro from SkLearn: {recall_macro:.2f}%')
-print(f'Test recall_micro from SkLearn: {recall_micro:.2f}%')
+print(f'Test Precision (Macro): {pre_macro:.2f}%')
+print(f'Test Precision (Micro): {pre_micro:.2f}%')
+print(f'Test Recall (Macro): {recall_macro:.2f}%')
+print(f'Test Recall (Micro): {recall_micro:.2f}%')
+print(f'Test F1 Score (Macro): {f1_macro:.2f}%')
+print(f'Test F1 Score (Micro): {f1_micro:.2f}%')
