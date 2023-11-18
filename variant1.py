@@ -1,24 +1,21 @@
 import torch
-from torchvision import datasets, transforms
 import torch.nn as nn
-from torch.utils.data import DataLoader, random_split
-from sklearn.model_selection import train_test_split
 from main import data_loading
 
 class CNNModel(nn.Module):
     def __init__(self, num_of_classes):
         super(CNNModel, self).__init__()
 
-        self.conv1 = nn.Conv2d(3, 16, kernel_size=3, stride=1, padding=1)
+        self.conv1 = nn.Conv2d(3, 16, kernel_size=5, stride=1, padding=1)
         self.pool = nn.MaxPool2d(4, 4)
-        self.conv2 = nn.Conv2d(16, 32, kernel_size=3, stride=1, padding=1)
-        self.fc1 = nn.Linear(32 * 16 * 16, 256)  # Increased the number of neurons in the fully connected layer
+        self.conv2 = nn.Conv2d(16, 32, kernel_size=5, stride=1, padding=1)
+        self.fc1 = nn.Linear(32 * 15 * 15, 256)  # Increased the number of neurons in the fully connected layer
         self.fc2 = nn.Linear(256, num_of_classes)
 
     def forward(self, x):
         x = self.pool(torch.relu(self.conv1(x)))
         x = self.pool(torch.relu(self.conv2(x)))
-        x = x.view(-1, 32 * 16 * 16)
+        x = x.view(-1, 32 * 15 * 15)
         x = torch.relu(self.fc1(x))
         x = self.fc2(x)
         return x
@@ -58,7 +55,7 @@ if __name__ == "__main__":
     model = CNNModel(4).to(device)
     criterion = nn.CrossEntropyLoss()
     optimizer = torch.optim.Adam(model.parameters(), lr=0.0001)
-    num_epochs = 10
+    num_epochs = 30
 
     for epoch in range(num_epochs):
         running_loss = 0
@@ -76,7 +73,7 @@ if __name__ == "__main__":
 
         print(f'Epoch [{epoch + 1}/{num_epochs}], Loss: {running_loss / len(train_loader):.4f}')
 
-        if (epoch + 1) % 5 == 0:
+        if (epoch + 1) % 10 == 0:
             accuracy, avg_val_loss = evaluate_model(model, val_loader, criterion, device)
             print(f'After: {epoch + 1} epochs')
             print(f'Validation Accuracy: {accuracy:.2f}%')
@@ -85,5 +82,5 @@ if __name__ == "__main__":
             if accuracy > 80:
                 break
 
-    torch.save(model.state_dict(), 'model_trained2.pth')
-    print('Model Saved')
+    torch.save(model.state_dict(), 'model_trained2')
+    print('Variant1 Model Saved')

@@ -8,6 +8,7 @@ from sklearn.metrics import confusion_matrix, ConfusionMatrixDisplay, precision_
 import matplotlib.pyplot as plt
 from main import CNNModel
 
+
 def dataLoading():
     transform = transforms.Compose([
         transforms.Resize((256, 256)),  # Resize images
@@ -87,6 +88,7 @@ recall_micro = recall_score(y_test, y_pred, average='micro')
 f1_macro = f1_score(y_test, y_pred, average='macro')
 f1_micro = f1_score(y_test, y_pred, average='micro')
 
+print(f'Evaluation of Main model ---> ')
 print(f'Test Accuracy from SkLearn: {acc:.2f}%')
 print(f'Test Precision (Macro): {pre_macro:.2f}%')
 print(f'Test Precision (Micro): {pre_micro:.2f}%')

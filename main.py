@@ -117,4 +117,4 @@ if __name__ == "__main__":
 
     # Save the trained model
     torch.save(model.state_dict(), 'model_trained')
-    print('Model Saved')
+    print('Main Model Saved')
