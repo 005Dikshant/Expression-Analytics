@@ -10,6 +10,12 @@ This project focuses on emotion recognition using a mixed dataset of images feat
   - `neutral/`
   - `engaged/`
   - `rename.py`
+- `main.py`
+- `variant1.py`
+- `variant2.py`
+- `evaluate_main.py`
+- `evaluate_variant1.py`
+- `evaluate_variant2.py`
 - `rescale_images.py`
 - `convert_into_grayscale.py`
 - `image_sharpening.py`
@@ -45,7 +51,47 @@ This project focuses on emotion recognition using a mixed dataset of images feat
 3. **Pixel Intensity Distribution:**
 - The script will generate histograms showcasing pixel intensity distribution, including RGB channels for color images.
 
-## Note
+### Training:
 
-Please ensure that you have Python and the required libraries installed to execute the scripts. Additionally, verify that the file paths and directories are set up correctly before running the code.
+1. **Main Model (main.py):**
+   - Run the following command to train the weights for the main model.
+     ```bash
+     python main.py
+     ```
 
+2. **Variant 1 Model (variant1.py):**
+   - Execute the following command to train the weights for the variant1 model.
+     ```bash
+     python variant1.py
+     ```
+
+3. **Variant 2 Model (variant2.py):**
+   - Use the following command to train the weights for the variant2 model.
+     ```bash
+     python variant2.py
+     ```
+
+### Evaluation:
+
+1. **Main Model Evaluation (evaluate_main.py):**
+   - Run the evaluation script for the main model to generate confusion matrix and other results.
+     ```bash
+     python evaluate_main.py
+     ```
+
+2. **Variant 1 Model Evaluation (evaluate_variant1.py):**
+   - Execute the evaluation script for the variant1 model.
+     ```bash
+     python evaluate_variant1.py
+     ```
+
+3. **Variant 2 Model Evaluation (evaluate_variant2.py):**
+   - Use the following command to evaluate the variant2 model.
+     ```bash
+     python evaluate_variant2.py
+     ```
+
+**Note:**
+- Please ensure that you have Python and the required libraries installed to execute the scripts.
+- Verify that the file paths and directories are set up correctly before running the code.
+- Add any additional inclusions or specific instructions as needed for your project.
