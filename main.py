@@ -87,7 +87,7 @@ if __name__ == "__main__":
     criterion = nn.CrossEntropyLoss()
     optimizer = torch.optim.Adam(model.parameters(), lr=0.0001)
     num_epochs = 10
-
+    Acc=0
     # Train the model for a specified number of epochs
     for epoch in range(num_epochs):
         running_loss = 0
@@ -112,8 +112,12 @@ if __name__ == "__main__":
             print(f'Average Validation Loss: {avg_val_loss:.4f}')
 
             # Break the training loop if the validation accuracy exceeds 80%
-            if accuracy > 80:
-                break
+            # if accuracy > 80:
+            #     break
+            if accuracy>Acc:
+                Acc=accuracy
+                torch.save(model.state_dict(), 'model_trained')
+
 
     # Save the trained model
     torch.save(model.state_dict(), 'model_trained')
