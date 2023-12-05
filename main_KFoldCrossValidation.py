@@ -110,7 +110,7 @@ if __name__ == "__main__":
 
             if accuracy>Acc:
                 Acc=accuracy
-            torch.save(model.state_dict(), 'model_trained_KFold')
+                torch.save(model.state_dict(), 'model_trained_KFold')
 
 
         print(f'After Fold: {fold + 1}')
